@@ -1,0 +1,58 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:spotify_app/data/model/auth/create_user_req.dart';
+import 'package:spotify_app/data/model/auth/sign_in_user.dart';
+
+abstract class AuthFirebaseService{
+   Future<Either> signIn(SignInUserReq signInUserReq);
+   Future<Either> signUp(CreateUserReq createUserReq);
+}
+class AuthFirebaseServiceImplement extends AuthFirebaseService{
+  @override
+  Future<Either> signIn(SignInUserReq signInUserReq)async {
+    try{
+      
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: signInUserReq.email, 
+        password: signInUserReq.password);
+        
+        return Right('Sign in was successfull');
+    }on FirebaseAuthException catch(e){
+      String message='';
+    if(e.code=='invalid-email'){
+        message='Not user found for that email';
+    } else if(e.code=='invalid-credential'){
+        message = 'Wrong password provided for that user';
+    }
+    return Left(message);
+    }
+  }
+
+  @override
+  Future<Either> signUp(CreateUserReq createUserReq) async {
+
+    try{
+     var data= await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: createUserReq.email, 
+        password: createUserReq.password);
+        FirebaseFirestore.instance.collection('Users').add({
+          'name':createUserReq.fullName,
+          'email':data.user?.email
+        });
+        return Right('Sign up was successfull');
+    }on FirebaseAuthException catch(e){
+      String message='';
+    if(e.code=='weak-password'){
+        message='The password provided is too weak';
+    } else if(e.code=='email-already-in-use'){
+        message = 'An account already exist with that email';
+    }
+    return Left(message);
+    }
+    
+    
+  }
+
+}
