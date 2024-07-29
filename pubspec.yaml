@@ -45,6 +45,8 @@ dependencies:
   get_it: ^7.7.0
   dartz: ^0.10.1
   cloud_firestore: ^5.1.0
+  just_audio: ^0.9.39
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,5 @@
  import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spotify_app/domain/usecases/auth/song/signup_usecase.dart';
+import 'package:spotify_app/domain/usecases/auth/song/get_news_songs_usercase.dart';
 import 'package:spotify_app/presentation/home/bloc/news_songs_state.dart';
 import 'package:spotify_app/service_located.dart';
 

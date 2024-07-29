@@ -8,6 +8,8 @@ import 'package:spotify_app/core/config/assets/app_image.dart';
 import 'package:spotify_app/core/config/assets/app_vector.dart';
 import 'package:spotify_app/core/config/themes/app_color.dart';
 import 'package:spotify_app/presentation/home/widget/news_songs.dart';
+import 'package:spotify_app/presentation/home/widget/play_list.dart';
+import 'package:spotify_app/presentation/profile/pages/profile.dart';
 
 class HomePage extends StatefulWidget {
    HomePage({super.key});
@@ -27,7 +29,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.darkBackground,
       appBar: BasicAppBar(
+        action: IconButton(
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>ProfilePage()));
+          }, 
+          icon: Icon(Icons.person)),
         hideBack: false,
         title: SvgPicture.asset(
           AppVector.logo,
@@ -44,13 +52,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             _tab(),
             SizedBox(
               height: 260,
-              child: TabBarView(children: [
-                NewsSongs(),
+              child: TabBarView(
+                controller: tabController,
+                children: [
+                const NewsSongs(),
                 Container(),
                 Container(),
                 Container(),
               ]),
-            )
+            ),
+            
+            PlayList()
             ],
         ),
       ),
@@ -85,24 +97,24 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       indicatorColor: AppColor.primary,
       controller: tabController,
       labelColor: context.isDarkMode?Colors.white:Colors.black ,
-      padding: EdgeInsets.symmetric(vertical: 40,horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 40,horizontal: 16),
       tabs: [
-         Text("News",
+         const Text("News",
          style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 16
          ),),
-         Text("Videos",
+         const Text("Videos",
          style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 16
          ),),
-         Text("Artists",
+         const Text("Artists",
          style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 16
          ),),
-         Text("Podcasts",
+         const Text("Podcasts",
          style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 16

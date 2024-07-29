@@ -2,12 +2,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:spotify_app/core/config/constans/app_url.dart';
 import 'package:spotify_app/data/model/auth/create_user_req.dart';
 import 'package:spotify_app/data/model/auth/sign_in_user.dart';
+import 'package:spotify_app/data/model/auth/user.dart';
+import 'package:spotify_app/domain/entities/auth/user.dart';
 
 abstract class AuthFirebaseService{
    Future<Either> signIn(SignInUserReq signInUserReq);
    Future<Either> signUp(CreateUserReq createUserReq);
+   Future<Either> getUser();
 }
 class AuthFirebaseServiceImplement extends AuthFirebaseService{
   @override
@@ -37,7 +41,8 @@ class AuthFirebaseServiceImplement extends AuthFirebaseService{
      var data= await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: createUserReq.email, 
         password: createUserReq.password);
-        FirebaseFirestore.instance.collection('Users').add({
+        FirebaseFirestore.instance.collection('Users').doc(data.user?.uid)
+        .set({
           'name':createUserReq.fullName,
           'email':data.user?.email
         });
@@ -53,6 +58,28 @@ class AuthFirebaseServiceImplement extends AuthFirebaseService{
     }
     
     
+  }
+  
+  @override
+  Future<Either> getUser() async{
+    try{
+        FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    print("1");
+    var user = await firebaseFirestore.collection("Users").doc(
+      firebaseAuth.currentUser?.uid
+    ).get();
+    print(user.id);
+    print(user);
+    UserModel userModel = UserModel.fromJson(user.data()!);
+    print("3");
+    userModel.imageUrl=firebaseAuth.currentUser?.photoURL??AppUrl.defaultImage;
+    UserEntity userEntity =userModel.toEntity();
+    return Right(userEntity);
+    }catch(e){
+     print(e);
+     return Left("Some error"); 
+    }
   }
 
 }

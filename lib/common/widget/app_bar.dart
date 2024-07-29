@@ -4,13 +4,16 @@ import 'package:spotify_app/common/helper/is_dark.dart';
 class BasicAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? title;
   final bool hideBack;
-  const BasicAppBar({super.key, this.title,this.hideBack=false});
+  final Color? backgroundColor;
+  final Widget? action;
+  const BasicAppBar({super.key, this.title,this.hideBack=false, this.action,this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      actions: [action??Container()],
       title: title,
-      backgroundColor: Colors.transparent,
+      backgroundColor: backgroundColor?? Colors.transparent,
       elevation: 0.30,
       leading: hideBack ? null: IconButton(
         onPressed: (){

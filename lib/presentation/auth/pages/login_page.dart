@@ -30,81 +30,83 @@ class LoginPage extends StatelessWidget {
       bottomNavigationBar: _signInText(context),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Sign in",
-              style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: context.isDarkMode ? Colors.white : Colors.black),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "If you need Any Support",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-                TextButton(onPressed: () {}, child: Text("Click here"))
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            _emailField(context),
-            const SizedBox(
-              height: 20,
-            ),
-            
-            _passwordField(context),
-            const SizedBox(
-              height: 10,
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: InkWell(
-                  onTap: (){},
-                  child: Text(
-                  
-                  "Recovery Password",
-                  style: TextStyle(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Sign in",
+                style: TextStyle(
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: context.isDarkMode?Colors.white.withOpacity(0.5):Colors.black.withOpacity(0.5),
-                    fontSize: 15
+                    color: context.isDarkMode ? Colors.white : Colors.black),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "If you need Any Support",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                   ),
+                  TextButton(onPressed: () {}, child: Text("Click here"))
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              _emailField(context),
+              const SizedBox(
+                height: 20,
+              ),
+              
+              _passwordField(context),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: InkWell(
+                    onTap: (){},
+                    child: Text(
+                    
+                    "Recovery Password",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: context.isDarkMode?Colors.white.withOpacity(0.5):Colors.black.withOpacity(0.5),
+                      fontSize: 15
+                    ),
+                    ),
                   ),
                 ),
               ),
-            ),
-              const SizedBox(
-              height: 20,
-            ),
-            BasicAppButton(onPressed: () async{
-               var result = await sl<SignInUsecase>().call(params: SignInUserReq(
-                
-                email: _email.text.toString(), 
-                password: _password.text.toString()));
-                result.fold(
-                  (l){
-                    var snackBar = SnackBar(content: Text(l));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }, 
-                  (r){
-                    Navigator.pushAndRemoveUntil(
-                      context, 
-                      MaterialPageRoute(builder: (_)=>HomePage()), 
-                      (route)=>false);
-                  });
-            }, text: "Login")
-          ],
+                const SizedBox(
+                height: 20,
+              ),
+              BasicAppButton(onPressed: () async{
+                 var result = await sl<SignInUsecase>().call(params: SignInUserReq(
+                  
+                  email: _email.text.toString(), 
+                  password: _password.text.toString()));
+                  result.fold(
+                    (l){
+                      var snackBar = SnackBar(content: Text(l));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }, 
+                    (r){
+                      Navigator.pushAndRemoveUntil(
+                        context, 
+                        MaterialPageRoute(builder: (_)=>HomePage()), 
+                        (route)=>false);
+                    });
+              }, text: "Login")
+            ],
+          ),
         ),
       ),
     );

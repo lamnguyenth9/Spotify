@@ -14,33 +14,35 @@ import 'package:spotify_app/service_located.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if(kIsWeb){
-    await Firebase.initializeApp(options: const FirebaseOptions(
-      apiKey: "AIzaSyA1uLd8E1x4QPU38-dJjvg47obgeeH_09g", 
-      appId: "1:856243836026:web:1ab1559d9a2a394ccd17c3", 
-      messagingSenderId:"856243836026", 
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+      apiKey: "AIzaSyA1uLd8E1x4QPU38-dJjvg47obgeeH_09g",
+      appId: "1:856243836026:web:1ab1559d9a2a394ccd17c3",
+      messagingSenderId: "856243836026",
       authDomain: "spotify-2b5b6.firebaseapp.com",
       projectId: "spotify-2b5b6",
-      storageBucket: "spotify-2b5b6.appspot.com",));
-  }
- else if(Platform.isAndroid){
-    await Firebase.initializeApp(options: const FirebaseOptions(
-      apiKey: "AIzaSyDFq3ChqeoCTbR1Sz2LZhVr_C__hNyF23o", 
-      appId: "1:856243836026:android:4b6914e02a5daac4cd17c3", 
-      messagingSenderId:"", 
-      
+      storageBucket: "spotify-2b5b6.appspot.com",
+    ));
+  } else if (Platform.isAndroid) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+      apiKey: "AIzaSyDFq3ChqeoCTbR1Sz2LZhVr_C__hNyF23o",
+      appId: "1:856243836026:android:4b6914e02a5daac4cd17c3",
+      messagingSenderId: "",
       projectId: "spotify-2b5b6",
-      storageBucket: "spotify-2b5b6.appspot.com",));
-  } else{
-    await Firebase.initializeApp(options: const FirebaseOptions(
-      apiKey: "AIzaSyCiFIH0mIFmMrcJvPq-p16rypJ_lpWwJO4", 
-      appId: "1:856243836026:ios:60fb197899349978cd17c3", 
-      messagingSenderId:"", 
-      
+      storageBucket: "spotify-2b5b6.appspot.com",
+    ));
+  } else {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+      apiKey: "AIzaSyCiFIH0mIFmMrcJvPq-p16rypJ_lpWwJO4",
+      appId: "1:856243836026:ios:60fb197899349978cd17c3",
+      messagingSenderId: "",
       projectId: "spotify-2b5b6",
-      ));
+    ));
   }
-  
+
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: kIsWeb
         ? HydratedStorage.webStorageDirectory
@@ -48,7 +50,8 @@ Future<void> main() async {
   );
   await initializeDependecies();
   runApp(
-    MyApp()
+     MyApp(), // Wrap your app
+    
   );
 }
 
@@ -58,10 +61,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_)=>ThemeCubit())
-      ],
-      child: BlocBuilder<ThemeCubit,ThemeMode>(
+      providers: [BlocProvider(create: (_) => ThemeCubit())],
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (BuildContext context, ThemeMode mode) => MaterialApp(
           
           theme: AppTheme.lightTheme,
